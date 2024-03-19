@@ -1,0 +1,230 @@
+DROP DATABASE IF EXISTS row_to_column;
+CREATE DATABASE row_to_column;
+USE row_to_column;
+
+DROP TABLE sales_data;
+CREATE TABLE sales_data (Sales_Date Date, Customer_id VARCHAR (30), Amount VARCHAR (30));
+
+INSERT INTO sales_data (Sales_Date, Customer_id, Amount) VALUES
+('2021-01-01', 'Cust-1', '50$'),
+('2021-01-02', 'Cust-1', '50$'),
+('2021-01-03', 'Cust-1', '50$'),
+('2021-01-01', 'Cust-2', '100$'),
+('2021-01-02', 'Cust-2', '100$'),
+('2021-01-03', 'Cust-2', '100$'),
+('2021-02-01', 'Cust-2', '-100$'),
+('2021-02-02', 'Cust-2', '-100$'),
+('2021-02-03', 'Cust-2', '-100$'),
+('2021-03-01', 'Cust-3', '1$'),
+('2021-04-01', 'Cust-3', '1$'),
+('2021-05-01', 'Cust-3', '1$'),
+('2021-06-01', 'Cust-3', '1$'),
+('2021-07-01', 'Cust-3', '-1$'),
+('2021-08-01', 'Cust-3', '-1$'),
+('2021-09-01', 'Cust-3', '-1$'),
+('2021-10-01', 'Cust-3', '-1$'),
+('2021-11-01', 'Cust-3', '-1$'),
+('2021-12-01', 'Cust-3', '-1$');
+
+SELECT * FROM sales_data;
+-- Changing the date format from 2021-01-01 to 01-Jan-2021 --
+SELECT DATE_FORMAT(Sales_date,'%d-%b-%Y') AS Sales_Date,Customer_id,Amount FROM sales_data;
+
+-- write a query to fetch the results into a desired format. Convert row data to  column  data--
+WITH base_query AS
+	( SELECT Customer_id AS Customer,
+	DATE_FORMAT(Sales_Date, '%b-%y') AS Sales_Date,
+	REPLACE (Amount, '$', '') AS Amount
+	FROM sales_data )
+SELECT * FROM base_query;
+
+WITH base_query AS
+	( SELECT Customer_id AS Customer,
+	DATE_FORMAT(Sales_Date, '%b-%y') AS Sales_Date,
+	REPLACE (Amount, '$', '') AS Amount
+	FROM sales_data )
+SELECT customer
+,CASE WHEN Sales_Date = 'Jan-21' THEN Amount ELSE 0 END AS Jan_21
+,CASE WHEN Sales_Date = 'Feb-21' THEN Amount ELSE 0 END AS Feb_21   
+,CASE WHEN Sales_Date = 'Mar-21' THEN Amount ELSE 0 END AS Mar_21    
+,CASE WHEN Sales_Date = 'Apr-21' THEN Amount ELSE 0 END AS Apr_21    
+,CASE WHEN Sales_Date = 'May-21' THEN Amount ELSE 0 END AS May_21    
+,CASE WHEN Sales_Date = 'Jun-21' THEN Amount ELSE 0 END AS Jun_21    
+,CASE WHEN Sales_Date = 'Jul-21' THEN Amount ELSE 0 END AS Jul_21    
+,CASE WHEN Sales_Date = 'Aug-21' THEN Amount ELSE 0 END AS Aug_21    
+,CASE WHEN Sales_Date = 'Sep-21' THEN Amount ELSE 0 END AS Sep_21    
+,CASE WHEN Sales_Date = 'Oct-21' THEN Amount ELSE 0 END AS Oct_21    
+,CASE WHEN Sales_Date = 'Nov-21' THEN Amount ELSE 0 END AS Nov_21    
+,CASE WHEN Sales_Date = 'Dec-21' THEN Amount ELSE 0 END AS Dec_21    
+FROM base_query;
+
+
+WITH base_query AS
+	( SELECT Customer_id AS Customer,
+	DATE_FORMAT(Sales_Date, '%b-%y') AS Sales_Date,
+	REPLACE (Amount, '$', '') AS Amount
+	FROM sales_data )
+SELECT customer
+, SUM(CASE WHEN Sales_Date = 'Jan-21' THEN Amount ELSE 0 END) AS Jan_21
+, SUM(CASE WHEN Sales_Date = 'Feb-21' THEN Amount ELSE 0 END) AS Feb_21   
+, SUM(CASE WHEN Sales_Date = 'Mar-21' THEN Amount ELSE 0 END) AS Mar_21    
+, SUM(CASE WHEN Sales_Date = 'Apr-21' THEN Amount ELSE 0 END) AS Apr_21    
+, SUM(CASE WHEN Sales_Date = 'May-21' THEN Amount ELSE 0 END) AS May_21    
+, SUM(CASE WHEN Sales_Date = 'Jun-21' THEN Amount ELSE 0 END) AS Jun_21    
+, SUM(CASE WHEN Sales_Date = 'Jul-21' THEN Amount ELSE 0 END) AS Jul_21    
+, SUM(CASE WHEN Sales_Date = 'Aug-21' THEN Amount ELSE 0 END) AS Aug_21    
+, SUM(CASE WHEN Sales_Date = 'Sep-21' THEN Amount ELSE 0 END) AS Sep_21    
+, SUM(CASE WHEN Sales_Date = 'Oct-21' THEN Amount ELSE 0 END) AS Oct_21    
+, SUM(CASE WHEN Sales_Date = 'Nov-21' THEN Amount ELSE 0 END) AS Nov_21    
+, SUM(CASE WHEN Sales_Date = 'Dec-21' THEN Amount ELSE 0 END) AS Dec_21    
+FROM base_query
+GROUP BY customer;
+
+-- Taking total for each month according to month columns--
+WITH base_query AS
+	( SELECT Customer_id AS Customer,
+	DATE_FORMAT(Sales_Date, '%b-%y') AS Sales_Date,
+	REPLACE (Amount, '$', '') AS Amount
+	FROM sales_data )
+SELECT customer
+, SUM(CASE WHEN Sales_Date = 'Jan-21' THEN Amount ELSE 0 END) AS Jan_21
+, SUM(CASE WHEN Sales_Date = 'Feb-21' THEN Amount ELSE 0 END) AS Feb_21   
+, SUM(CASE WHEN Sales_Date = 'Mar-21' THEN Amount ELSE 0 END) AS Mar_21    
+, SUM(CASE WHEN Sales_Date = 'Apr-21' THEN Amount ELSE 0 END) AS Apr_21    
+, SUM(CASE WHEN Sales_Date = 'May-21' THEN Amount ELSE 0 END) AS May_21    
+, SUM(CASE WHEN Sales_Date = 'Jun-21' THEN Amount ELSE 0 END) AS Jun_21    
+, SUM(CASE WHEN Sales_Date = 'Jul-21' THEN Amount ELSE 0 END) AS Jul_21    
+, SUM(CASE WHEN Sales_Date = 'Aug-21' THEN Amount ELSE 0 END) AS Aug_21    
+, SUM(CASE WHEN Sales_Date = 'Sep-21' THEN Amount ELSE 0 END) AS Sep_21    
+, SUM(CASE WHEN Sales_Date = 'Oct-21' THEN Amount ELSE 0 END) AS Oct_21    
+, SUM(CASE WHEN Sales_Date = 'Nov-21' THEN Amount ELSE 0 END) AS Nov_21    
+, SUM(CASE WHEN Sales_Date = 'Dec-21' THEN Amount ELSE 0 END) AS Dec_21    
+FROM base_query
+GROUP BY customer
+UNION
+SELECT 'Total' 
+, SUM(CASE WHEN Sales_Date = 'Jan-21' THEN Amount ELSE 0 END) AS Jan_21
+, SUM(CASE WHEN Sales_Date = 'Feb-21' THEN Amount ELSE 0 END) AS Feb_21   
+, SUM(CASE WHEN Sales_Date = 'Mar-21' THEN Amount ELSE 0 END) AS Mar_21    
+, SUM(CASE WHEN Sales_Date = 'Apr-21' THEN Amount ELSE 0 END) AS Apr_21    
+, SUM(CASE WHEN Sales_Date = 'May-21' THEN Amount ELSE 0 END) AS May_21    
+, SUM(CASE WHEN Sales_Date = 'Jun-21' THEN Amount ELSE 0 END) AS Jun_21    
+, SUM(CASE WHEN Sales_Date = 'Jul-21' THEN Amount ELSE 0 END) AS Jul_21    
+, SUM(CASE WHEN Sales_Date = 'Aug-21' THEN Amount ELSE 0 END) AS Aug_21    
+, SUM(CASE WHEN Sales_Date = 'Sep-21' THEN Amount ELSE 0 END) AS Sep_21    
+, SUM(CASE WHEN Sales_Date = 'Oct-21' THEN Amount ELSE 0 END) AS Oct_21    
+, SUM(CASE WHEN Sales_Date = 'Nov-21' THEN Amount ELSE 0 END) AS Nov_21    
+, SUM(CASE WHEN Sales_Date = 'Dec-21' THEN Amount ELSE 0 END) AS Dec_21    
+FROM base_query;
+
+-- Getting the total according to each customer along with month as last column--
+WITH base_query AS
+	( SELECT Customer_id AS Customer,
+	DATE_FORMAT(Sales_Date, '%b-%y') AS Sales_Date,
+	REPLACE (Amount, '$', '') AS Amount
+	FROM sales_data )
+SELECT customer
+, SUM(CASE WHEN Sales_Date = 'Jan-21' THEN Amount ELSE 0 END) AS Jan_21
+, SUM(CASE WHEN Sales_Date = 'Feb-21' THEN Amount ELSE 0 END) AS Feb_21   
+, SUM(CASE WHEN Sales_Date = 'Mar-21' THEN Amount ELSE 0 END) AS Mar_21    
+, SUM(CASE WHEN Sales_Date = 'Apr-21' THEN Amount ELSE 0 END) AS Apr_21    
+, SUM(CASE WHEN Sales_Date = 'May-21' THEN Amount ELSE 0 END) AS May_21    
+, SUM(CASE WHEN Sales_Date = 'Jun-21' THEN Amount ELSE 0 END) AS Jun_21    
+, SUM(CASE WHEN Sales_Date = 'Jul-21' THEN Amount ELSE 0 END) AS Jul_21    
+, SUM(CASE WHEN Sales_Date = 'Aug-21' THEN Amount ELSE 0 END) AS Aug_21    
+, SUM(CASE WHEN Sales_Date = 'Sep-21' THEN Amount ELSE 0 END) AS Sep_21    
+, SUM(CASE WHEN Sales_Date = 'Oct-21' THEN Amount ELSE 0 END) AS Oct_21    
+, SUM(CASE WHEN Sales_Date = 'Nov-21' THEN Amount ELSE 0 END) AS Nov_21    
+, SUM(CASE WHEN Sales_Date = 'Dec-21' THEN Amount ELSE 0 END) AS Dec_21    
+, SUM(Amount) AS Total
+FROM base_query
+GROUP BY customer
+UNION
+SELECT 'Total' 
+, SUM(CASE WHEN Sales_Date = 'Jan-21' THEN Amount ELSE 0 END) AS Jan_21
+, SUM(CASE WHEN Sales_Date = 'Feb-21' THEN Amount ELSE 0 END) AS Feb_21   
+, SUM(CASE WHEN Sales_Date = 'Mar-21' THEN Amount ELSE 0 END) AS Mar_21    
+, SUM(CASE WHEN Sales_Date = 'Apr-21' THEN Amount ELSE 0 END) AS Apr_21    
+, SUM(CASE WHEN Sales_Date = 'May-21' THEN Amount ELSE 0 END) AS May_21    
+, SUM(CASE WHEN Sales_Date = 'Jun-21' THEN Amount ELSE 0 END) AS Jun_21    
+, SUM(CASE WHEN Sales_Date = 'Jul-21' THEN Amount ELSE 0 END) AS Jul_21    
+, SUM(CASE WHEN Sales_Date = 'Aug-21' THEN Amount ELSE 0 END) AS Aug_21    
+, SUM(CASE WHEN Sales_Date = 'Sep-21' THEN Amount ELSE 0 END) AS Sep_21    
+, SUM(CASE WHEN Sales_Date = 'Oct-21' THEN Amount ELSE 0 END) AS Oct_21    
+, SUM(CASE WHEN Sales_Date = 'Nov-21' THEN Amount ELSE 0 END) AS Nov_21    
+, SUM(CASE WHEN Sales_Date = 'Dec-21' THEN Amount ELSE 0 END) AS Dec_21   
+, '' AS Total 
+FROM base_query;
+
+-- Need to add $ sign as suffix & replace negative symbol with parenthesis--
+
+WITH base_query AS
+	( SELECT Customer_id AS Customer,
+	DATE_FORMAT(Sales_Date, '%b-%y') AS Sales_Date,
+	REPLACE (Amount, '$', '') AS Amount
+	FROM sales_data ),
+    Final_Data AS
+	( SELECT customer
+	, SUM(CASE WHEN Sales_Date = 'Jan-21' THEN Amount ELSE 0 END) AS Jan_21
+	, SUM(CASE WHEN Sales_Date = 'Feb-21' THEN Amount ELSE 0 END) AS Feb_21   
+	, SUM(CASE WHEN Sales_Date = 'Mar-21' THEN Amount ELSE 0 END) AS Mar_21    
+	, SUM(CASE WHEN Sales_Date = 'Apr-21' THEN Amount ELSE 0 END) AS Apr_21    
+	, SUM(CASE WHEN Sales_Date = 'May-21' THEN Amount ELSE 0 END) AS May_21    
+	, SUM(CASE WHEN Sales_Date = 'Jun-21' THEN Amount ELSE 0 END) AS Jun_21    
+	, SUM(CASE WHEN Sales_Date = 'Jul-21' THEN Amount ELSE 0 END) AS Jul_21    
+	, SUM(CASE WHEN Sales_Date = 'Aug-21' THEN Amount ELSE 0 END) AS Aug_21    
+	, SUM(CASE WHEN Sales_Date = 'Sep-21' THEN Amount ELSE 0 END) AS Sep_21    
+	, SUM(CASE WHEN Sales_Date = 'Oct-21' THEN Amount ELSE 0 END) AS Oct_21    
+	, SUM(CASE WHEN Sales_Date = 'Nov-21' THEN Amount ELSE 0 END) AS Nov_21    
+	, SUM(CASE WHEN Sales_Date = 'Dec-21' THEN Amount ELSE 0 END) AS Dec_21    
+	, SUM(Amount) AS Total
+	FROM base_query
+	GROUP BY customer
+	UNION
+	SELECT 'Total' 
+	, SUM(CASE WHEN Sales_Date = 'Jan-21' THEN Amount ELSE 0 END) AS Jan_21
+	, SUM(CASE WHEN Sales_Date = 'Feb-21' THEN Amount ELSE 0 END) AS Feb_21   
+	, SUM(CASE WHEN Sales_Date = 'Mar-21' THEN Amount ELSE 0 END) AS Mar_21    
+	, SUM(CASE WHEN Sales_Date = 'Apr-21' THEN Amount ELSE 0 END) AS Apr_21    
+	, SUM(CASE WHEN Sales_Date = 'May-21' THEN Amount ELSE 0 END) AS May_21    
+	, SUM(CASE WHEN Sales_Date = 'Jun-21' THEN Amount ELSE 0 END) AS Jun_21    
+	, SUM(CASE WHEN Sales_Date = 'Jul-21' THEN Amount ELSE 0 END) AS Jul_21    
+	, SUM(CASE WHEN Sales_Date = 'Aug-21' THEN Amount ELSE 0 END) AS Aug_21    
+	, SUM(CASE WHEN Sales_Date = 'Sep-21' THEN Amount ELSE 0 END) AS Sep_21    
+	, SUM(CASE WHEN Sales_Date = 'Oct-21' THEN Amount ELSE 0 END) AS Oct_21    
+	, SUM(CASE WHEN Sales_Date = 'Nov-21' THEN Amount ELSE 0 END) AS Nov_21    
+	, SUM(CASE WHEN Sales_Date = 'Dec-21' THEN Amount ELSE 0 END) AS Dec_21   
+	, '' AS Total 
+	FROM base_query )
+SELECT customer
+, CASE WHEN Jan_21 < 0 THEN CONCAT('(',Jan_21 *-1, ')$') ELSE CONCAT(Jan_21, '$') END AS 'Jan-21'
+, CASE WHEN Feb_21 < 0 THEN CONCAT('(',Feb_21 *-1, ')$') ELSE CONCAT(Feb_21, '$') END AS 'Feb-21'
+, CASE WHEN Mar_21 < 0 THEN CONCAT('(',Mar_21 *-1, ')$') ELSE CONCAT(Mar_21, '$') END AS 'Mar-21'
+, CASE WHEN Apr_21 < 0 THEN CONCAT('(',Apr_21 *-1, ')$') ELSE CONCAT(Apr_21, '$') END AS 'Apr-21'
+, CASE WHEN May_21 < 0 THEN CONCAT('(',May_21 *-1, ')$') ELSE CONCAT(May_21, '$') END AS 'May-21'
+, CASE WHEN Jun_21 < 0 THEN CONCAT('(',Jun_21 *-1, ')$') ELSE CONCAT(Jun_21, '$') END AS 'Jun-21'
+, CASE WHEN Jul_21 < 0 THEN CONCAT('(',Jul_21 *-1, ')$') ELSE CONCAT(Jul_21, '$') END AS 'Jul-21'
+, CASE WHEN Aug_21 < 0 THEN CONCAT('(',Aug_21 *-1, ')$') ELSE CONCAT(Aug_21, '$') END AS 'Aug-21'
+, CASE WHEN Sep_21 < 0 THEN CONCAT('(',Sep_21 *-1, ')$') ELSE CONCAT(Sep_21, '$') END AS 'Sep-21'
+, CASE WHEN Oct_21 < 0 THEN CONCAT('(',Oct_21 *-1, ')$') ELSE CONCAT(Oct_21, '$') END AS 'Oct-21'
+, CASE WHEN Nov_21 < 0 THEN CONCAT('(',Nov_21 *-1, ')$') ELSE CONCAT(Nov_21, '$') END AS 'Nov-21'
+, CASE WHEN Dec_21 < 0 THEN CONCAT('(',Dec_21 *-1, ')$') ELSE CONCAT(Dec_21, '$') END AS 'Dec-21'
+, CASE WHEN Total = '' THEN ''
+ELSE CASE WHEN Total < 0 THEN CONCAT('(',Total *-1, ')$') ELSE CONCAT(Total, '$') END 
+END AS 'Total' 
+FROM Final_Data;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
